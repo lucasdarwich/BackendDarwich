@@ -3,7 +3,7 @@ const manager = new ProductManager("./data/Products.json");
 
 const queries = async () => {
   try {
-    console.log("Primera consulta");
+    console.log("Primera consulta!");
     let products = await manager.getProducts();
     console.log(products);
 
