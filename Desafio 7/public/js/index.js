@@ -1,5 +1,4 @@
 //----------------------------------------- REGISTRO ------------------------------------------------------
-
 const elementExists = (id) => document.getElementById(id) !== null;
 
 elementExists("signup") &&
@@ -22,9 +21,22 @@ elementExists("signup") &&
       const result = data.json();
       console.log(result);
       if (data.status === 200) {
-        window.location.href = "/api/login";
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Usuario Creado Con éxito!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setTimeout(function () {
+          window.location.href = "/api/login";
+        }, 2000);
       } else {
-        alert("El email ya existe");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "El correo ya existe!",
+        });
       }
     });
   });
@@ -58,7 +70,11 @@ elementExists("send") &&
       if (data === "success") {
         window.location.href = "/api/login/products";
       } else {
-        alert("Usuario o contraseña incorrecta");
+        Swal.fire({
+          icon: "warning",
+          title: "Oops...",
+          text: "Usuario o contraseña incorrecta!",
+        });
       }
     });
   });
@@ -72,7 +88,16 @@ elementExists("logout") &&
         const data = await response.json();
         console.log(data);
         if (data.message === "LogoutOK") {
-          window.location.href = "/api/home";
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Gracias por tu visita!",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          setTimeout(function () {
+            window.location.href = "/api/home";
+          }, 2500);
         } else {
           alert("logout failed");
         }
@@ -94,7 +119,7 @@ let pagina = 1;
 let limite;
 
 const paginaProductos = () => {
-  const getProduct = async (limit = 2, page = 1) => {
+  const getProduct = async (limit = 4, page = 1) => {
     const product = await fetch(`/api/products/?limit=${limit}&page=${page}`);
     const result = await product.json();
     return result;
@@ -130,14 +155,15 @@ const paginaProductos = () => {
                 <div class="card-body">
                 <h5 class="card-title">${prod.title}</h5>
                 <p class="card-text"> ${prod.description}</p>
-                <p class="card-text">PRECIO: $${prod.price}</p>
-                <p class="card-text">CATEGORIA: ${prod.category}</p>
-                <p class="card-text">Codigo: ${prod.code}</p>
+                <p class="card-text">Precio: $${prod.price}</p>
+                <p class="card-text">Categoría: ${prod.category}</p>
+                <p class="card-text">Código: ${prod.code}</p>
                 <label for="cantidad">Cantidad:</label>
                 <input type=number class="card-text" min="1" value="1" id="${index}"/>
                 </div>
                 <button class="btn btn-primary mx-auto mb-1" id=${prod._id}>Agregar al Carrito</button>
                 </div>`;
+
       containerCards.appendChild(item);
       const cantidad = document.getElementById(index);
       cantidad.addEventListener("change", (e) => {
@@ -156,7 +182,7 @@ const paginaProductos = () => {
   const siguiente = async () => {
     pagina++;
     pag.innerHTML = pagina;
-    const products = await getProduct(2, pagina);
+    const products = await getProduct(4, pagina);
     console.log(products);
     if (!products.products.hasNextPage) {
       btnSiguiente.disabled = true;
@@ -170,7 +196,7 @@ const paginaProductos = () => {
   const anterior = async () => {
     pagina--;
     pag.innerHTML = pagina;
-    const products = await getProduct(2, pagina);
+    const products = await getProduct(4, pagina);
 
     if (!products.products.hasPrevPage) {
       btnAnterior.disabled = true;
@@ -222,7 +248,13 @@ const addCart = async (pid, quantity) => {
         quantity: quantity,
       }),
     });
-    alert("Producto agregado al carrito");
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Producto Agregado al Carrito",
+      showConfirmButton: false,
+      timer: 2000,
+    });
   } catch (err) {
     console.log(err);
   }
@@ -241,7 +273,13 @@ const deleteCart = async (pid) => {
         },
       }
     );
-    alert("Producto eliminado del carrito");
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Producto eliminado del carrito",
+      showConfirmButton: false,
+      timer: 2000,
+    });
     renderCart();
   } catch (err) {
     console.log(err);
