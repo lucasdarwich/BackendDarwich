@@ -20,6 +20,7 @@ import githubRoutes from "./routes/github.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
 import conexionDB from "./database/db.mongoose.js";
 import mockingRoutes from "./routes/mocking.routes.js";
+import { errorHandler } from "./middlewares/errorHandlers.js";
 
 dotenv.config();
 const app = express();
@@ -107,3 +108,4 @@ app.use("/api/carts", cartRoutes);
 app.use("/api/sessions", githubRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/mockingproducts", mockingRoutes);
+app.use(errorHandler);

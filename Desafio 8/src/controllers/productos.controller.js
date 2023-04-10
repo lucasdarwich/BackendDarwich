@@ -1,4 +1,3 @@
-import { json } from "express";
 import ProductManger from "../dao/Mongo/product.repository.Mongo.js";
 
 const productManger = new ProductManger();
@@ -32,7 +31,7 @@ export const crearProducto = async (req, res) => {
     const response = await productManger.createProduct(newProduct);
     res.send(response);
   } catch (err) {
-    res.status(500).send(err.message);
+    throw err;
   }
 };
 

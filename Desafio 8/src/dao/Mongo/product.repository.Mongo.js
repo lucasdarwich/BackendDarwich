@@ -1,4 +1,7 @@
 import { productModel } from "../../models/product.model.js";
+import { CustomError } from "../../services/error/customError.js";
+import { EError } from "../../enums/EError.js";
+import { generateProductoDeleteErrorInfo } from "../../services/error/productoErrorInfo.js";
 
 class ProductManger {
   async getAllProducts() {
@@ -66,7 +69,12 @@ class ProductManger {
       const deleteProd = await productModel.findByIdAndDelete(id);
       return deleteProd;
     } catch (err) {
-      throw err;
+      return CustomError.createError({
+        message: `Error al Eliminar el Producto ${generateProductoDeleteErrorInfo(
+          id
+        )}`,
+        errorCode: EError.PRODUCT_NOT_DELETED,
+      });
     }
   }
 }
