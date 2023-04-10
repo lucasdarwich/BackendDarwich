@@ -123,5 +123,5 @@ app.use("/api/carts", cartRoutes);
 app.use("/api/sessions", githubRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/mockingproducts", mockingRoutes);
-app.use("/api//loggerTest", loggerRoutes);
+app.use("/api/loggerTest", loggerRoutes);
 app.use(errorHandler);

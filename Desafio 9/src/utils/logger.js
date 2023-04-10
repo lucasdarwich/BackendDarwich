@@ -55,7 +55,7 @@ const logger = winston.createLogger({
 });
 
 // Agrega el transporte de consola para entornos de desarrollo
-if (process.env.NODE_ENV !== "production") {
+if (process.env.ENVIRONMENT !== "production") {
   logger.add(
     new winston.transports.Console({
       level: "debug",
@@ -66,7 +66,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 // Elimina el transporte de consola para entornos de producción
-if (process.env.NODE_ENV === "production") {
+if (process.env.ENVIRONMENT === "production") {
   logger.remove(transports[0]);
 }
 
