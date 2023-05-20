@@ -32,6 +32,10 @@ const registroSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "cart",
   },
+  lastConnection: {
+    type: Date,
+    default: null,
+  },
 });
 
 registroSchema.pre("save", async function (next) {

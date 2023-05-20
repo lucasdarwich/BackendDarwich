@@ -7,6 +7,7 @@ import {
   updateUser,
   deleteUser,
   getAllUsersMainData,
+  deleteInactiveUsers,
 } from "../controllers/user.controller.js";
 const router = Router();
 
@@ -19,6 +20,9 @@ router.get("/", getAllUsers);
 // Obtener todos los usuarios con datos principales
 router.get("/datosprincipales", getAllUsersMainData);
 
+// Eliminar usuarios inactivos
+router.delete("/inactive-users", deleteInactiveUsers);
+
 // Obtener un usuario por ID
 router.get("/:id", getUserById);
 
@@ -27,15 +31,5 @@ router.put("/:id", updateUser);
 
 // Eliminar un usuario por ID
 router.delete("/:id", deleteUser);
-
-// Eliminar usuarios inactivos
-router.delete("/inactive-users", async (req, res) => {
-  try {
-    const result = await UserManager.deleteInactiveUsers();
-    res.json({ success: true, deletedCount: result.deletedCount });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 export default router;

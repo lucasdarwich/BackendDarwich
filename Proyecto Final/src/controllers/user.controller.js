@@ -1,4 +1,6 @@
 import registroModel from "../models/registro.model.js";
+import nodemailer from "nodemailer";
+import { opts } from "../config/options.js";
 
 // obtener todos los usuarios
 
@@ -83,6 +85,55 @@ export const getAllUsersMainData = async (req, res) => {
       { firstName: 1, email: 1, rol: 1 }
     );
     res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+//elimintar y enviar un correo con nodemailer a todos los usuarios que no hayan tenido conexión en los últimos 2 días. Deberá enviarse un correo indicando al usuario que su cuenta ha sido eliminada por inactividad
+
+export const deleteInactiveUsers = async () => {
+  try {
+    const users = await registroModel.find();
+    const today = new Date();
+    const twoDaysAgo = new Date(today.setDate(today.getDate() - 2));
+    const inactiveUsers = users.filter(
+      (user) => user.lastConnection < twoDaysAgo
+    );
+    if (inactiveUsers.length > 0) {
+      inactiveUsers.forEach(async (user) => {
+        await registroModel.findByIdAndDelete(user._id);
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          port: 587,
+          secure: false,
+          auth: {
+            user: opts.gmail.adminGmail,
+            pass: opts.gmail.adminPass,
+          },
+        });
+        const mailOptions = {
+          from: opts.gmail.adminGmail,
+          to: user.email,
+          subject: "IMPORTANTE: Cuenta eliminada por inactividad",
+          text: `Hola ${user.firstName}, tu cuenta ha sido eliminada por inactividad. Si deseas volver a registrarte, puedes hacerlo en: http://localhost:8080/api/home/registro`,
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error);
+          }
+        });
+      });
+      return res.status(200).json({
+        status: "success",
+        message: "Usuarios inactivos eliminados correctamente",
+      });
+    } else {
+      return res.status(404).json({
+        status: "error",
+        message: "No hay usuarios inactivos",
+      });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

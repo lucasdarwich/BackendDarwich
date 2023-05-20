@@ -12,6 +12,7 @@ export const autentificarLogin = async (req, res) => {
     age: req.user.age,
     id: req.user._id,
     rol: req.user.rol,
+    lastConnection: req.user.lastConnection,
   };
   if (req.user.rol === "admin") {
     req.session.admin = true;
@@ -55,12 +56,28 @@ export const logueo = async (req, res) => {
   }
 };
 
-export const authUser = async (req, res) => {
+/* export const authUser = async (req, res) => {
   if (await req.session.user) {
     const userData = await registroModel.findOne({
       email: req.session.user.email,
     });
     res.send({ user: userData });
+  }
+}; */
+
+//auth user y guarda la fecha de inicio de sesión en lastConnection
+
+export const authUser = async (req, res) => {
+  if (await req.session.user) {
+    const userData = await registroModel.findOne({
+      email: req.session.user.email,
+    });
+    const { firstName, lastName } = userData;
+    const lastConnection = new Date();
+    await registroModel.findOneAndUpdate(
+      { email: req.session.user.email },
+      { lastConnection }
+    );
   }
 };
 
@@ -72,4 +89,27 @@ export const logout = (req, res) => {
       res.status(200).send({ message: "LogoutOK" });
     }
   });
+};
+
+//desloguear usuario y antes de destruir la sesión, se guarda la fecha de deslogueo en lastConnection
+
+export const logoutUser = async (req, res) => {
+  if (await req.session.user) {
+    const userData = await registroModel.findOne({
+      email: req.session.user.email,
+    });
+    const { firstName, lastName } = userData;
+    const lastConnection = new Date();
+    await registroModel.findOneAndUpdate(
+      { email: req.session.user.email },
+      { lastConnection }
+    );
+    req.session.destroy((error) => {
+      if (error) {
+        res.status(401).send({ message: "Error" });
+      } else {
+        res.render("index", { firstName, lastName });
+      }
+    });
+  }
 };
