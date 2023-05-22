@@ -227,14 +227,14 @@ elementExists("pag") && paginaProductos();
 //Carrito
 
 const getUser = async () => {
-  const user = await fetch(`/api/login/user`);
+  const user = await fetch(`/api/users/user`);
   const data = await user.json();
   return data;
 };
 
 const getCart = async () => {
   const user = await getUser();
-  const userId = user.user._id;
+  const userId = user._id;
   const getCartUser = await fetch(`/api/carts/${userId}`);
   const data = await getCartUser.json();
   return data;
@@ -242,9 +242,8 @@ const getCart = async () => {
 
 const addCart = async (pid, quantity) => {
   console.log(quantity);
-  const carritoUser = await getUser();
-  const cartId = carritoUser.user.cart;
-
+  const user = await getUser();
+  const cartId = user.cart;
   try {
     const addCartProduct = await fetch(`/api/carts/${cartId}/products/${pid}`, {
       method: "PUT",
@@ -269,7 +268,7 @@ const addCart = async (pid, quantity) => {
 
 const deleteCart = async (pid) => {
   const carritoUser = await getUser();
-  const cartId = carritoUser.user.cart;
+  const cartId = carritoUser.cart;
   try {
     const deleteCartProduct = await fetch(
       `/api/carts/${cartId}/products/${pid}`,
@@ -319,7 +318,7 @@ const renderCart = async () => {
 
   ticket.addEventListener("click", async () => {
     const carritoUser = await getUser();
-    const userId = carritoUser.user._id;
+    const userId = carritoUser._id;
     console.log(userId);
     const response = await fetch(`/api/carts/${userId}/purchase`, {
       method: "POST",

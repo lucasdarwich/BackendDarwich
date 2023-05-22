@@ -18,11 +18,7 @@ router.get("/:id", obtenerCarritoUser);
 
 router.post("/", crearCarrito);
 
-router.put(
-  "/:cid/products/:pid",
-  actualizarProductoCarrito,
-  checkRoles(["user"])
-);
+router.put("/:cid/products/:pid", actualizarProductoCarrito);
 
 router.delete("/:cid/products/:pid", eliminarProductoCarrito);
 

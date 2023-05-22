@@ -1,5 +1,5 @@
 import { Router } from "express";
-import UserManager from "../dao/Mongo/users.repository.mongo.js";
+import passport from "passport";
 import {
   getAllUsers,
   addUser,
@@ -8,7 +8,9 @@ import {
   deleteUser,
   getAllUsersMainData,
   deleteInactiveUsers,
+  getLoggedUser,
 } from "../controllers/user.controller.js";
+
 const router = Router();
 
 // Crear un usuario
@@ -16,6 +18,10 @@ router.post("/", addUser);
 
 // Obtener todos los usuarios
 router.get("/", getAllUsers);
+
+//obtener usuario
+
+router.get("/user", getLoggedUser);
 
 // Obtener todos los usuarios con datos principales
 router.get("/datosprincipales", getAllUsersMainData);

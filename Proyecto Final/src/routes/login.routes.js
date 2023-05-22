@@ -21,11 +21,11 @@ router.post(
   autentificarLogin
 );
 
+router.get("/user", auth, authUser);
+
 router.get("/faillogin", falloLogin);
 
 router.get("/products", auth, logueo);
-
-router.get("/user", auth, authUser);
 
 router.get("/logout", logout);
 

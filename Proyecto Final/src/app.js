@@ -106,6 +106,6 @@ app.use("/api/mockingproducts", mockingRoutes);
 app.use("/api/loggerTest", loggerRoutes);
 app.use("/api/recuperar", forgotpasswordRoutes);
 app.use("/api/users", userRoutes);
-app.use(errorHandler);
-
+/* app.use(errorHandler);
+ */
 export { app };

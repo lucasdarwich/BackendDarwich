@@ -12,7 +12,6 @@ export const autentificarLogin = async (req, res) => {
     age: req.user.age,
     id: req.user._id,
     rol: req.user.rol,
-    lastConnection: req.user.lastConnection,
   };
   if (req.user.rol === "admin") {
     req.session.admin = true;
@@ -56,15 +55,6 @@ export const logueo = async (req, res) => {
   }
 };
 
-/* export const authUser = async (req, res) => {
-  if (await req.session.user) {
-    const userData = await registroModel.findOne({
-      email: req.session.user.email,
-    });
-    res.send({ user: userData });
-  }
-}; */
-
 //auth user y guarda la fecha de inicio de sesión en lastConnection
 
 export const authUser = async (req, res) => {
@@ -78,6 +68,9 @@ export const authUser = async (req, res) => {
       { email: req.session.user.email },
       { lastConnection }
     );
+    res.send("Usuario autenticado y datos actualizados");
+  } else {
+    res.send({ message: "error" });
   }
 };
 

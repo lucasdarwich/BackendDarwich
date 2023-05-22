@@ -24,6 +24,21 @@ export const addUser = async (req, res) => {
   }
 };
 
+// obtener los datos del usuario logeado
+
+export const getLoggedUser = async (req, res) => {
+  try {
+    const user = await registroModel.findById(req.user._id);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 //obtener usuario por id
 
 export const getUserById = async (req, res) => {
