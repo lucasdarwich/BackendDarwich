@@ -1,3 +1,111 @@
+//tabla usuarios modificar rol / eliminar usuario
+
+const getAllUsers = async () => {
+  const response = await fetch("/api/users");
+  const data = await response.json();
+  return data;
+};
+
+// renderizar usuarios en la tabla con un boton eliminar y modificar
+
+const paginaUsuarios = async () => {
+  try {
+    const users = await getAllUsers();
+    console.log(users);
+    const tabla = document.querySelector(".table");
+    const tbody = tabla.querySelector(".tableUsers");
+
+    // Limpiar el contenido actual del tbody
+    tbody.innerHTML = "";
+
+    users.forEach((user) => {
+      const item = document.createElement("tr");
+      item.innerHTML = `
+        <td>${user.firstName}</td>
+        <td>${user.rol}</td>
+        <td><button class="btn btn-danger" id="eliminarUserTabla" data-id="${user._id}">Eliminar</button></td>
+        <td><button class="btn btn-warning" id="modificarUserTabla" data-id="${user._id}">Modificar</button></td>
+      `;
+      tbody.appendChild(item);
+    });
+  } catch (error) {
+    console.error("Error al obtener los usuarios:", error);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", paginaUsuarios);
+
+//agregar un evento de escucha que al hacer click en el boton  <td><button class="btn btn-danger" id="eliminarUserTabla" data-id="${user._id}">Eliminar</button></td> se debera hacer un fetch con metodo delete a la ruta /api/users/:id para eliminar dicho usuario
+
+document.addEventListener("click", async (e) => {
+  if (e.target.id === "eliminarUserTabla") {
+    const id = e.target.dataset.id;
+    await eliminarUserTabla(id);
+  }
+});
+
+const eliminarUserTabla = async (id) => {
+  const config = {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const response = await fetch(`/api/users/${id}`, config);
+    const data = await response.json();
+    console.log(data);
+    paginaUsuarios();
+  } catch (error) {
+    console.error("Error al eliminar el usuario:", error);
+  }
+};
+
+//escuchar el boton <td><button class="btn btn-warning" id="modificarUserTabla" data-id="${user._id}">Modificar</button></td> y al hacer hacer el primer click cambiarle el rol a admin y al segundo click cambiarle el rol a user y al tercer click a premium y asi continuamente. Para esto debera hacer un fetch con metodo put a la ruta /api/users/:id y se debe modificar el rol del usuario en la base de datos
+
+document.addEventListener("click", async (e) => {
+  if (e.target.id === "modificarUserTabla") {
+    const id = e.target.dataset.id;
+    await modificarUserTabla(id);
+  }
+});
+
+// obtener usuario por ID y modificar rol al hacer click en el boton "Modificar Rol" cada click modifica el rol del usuario y lo guarda en la base de datos
+
+const modificarUserTabla = async (id) => {
+  const config = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+  try {
+    const response = await fetch(`/api/users/${id}`, config);
+    const data = await response.json();
+    console.log(data);
+    if (data.rol === "user") {
+      data.rol = "admin";
+    } else if (data.rol === "admin") {
+      data.rol = "premium";
+    } else if (data.rol === "premium") {
+      data.rol = "user";
+    }
+    const config2 = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
+    const response2 = await fetch(`/api/users/${id}`, config2);
+    const data2 = await response2.json();
+    console.log(data2);
+    paginaUsuarios();
+  } catch (error) {
+    console.error("Error al modificar el usuario:", error);
+  }
+};
+
 //Registro
 
 const elementExists = (id) => document.getElementById(id) !== null;
