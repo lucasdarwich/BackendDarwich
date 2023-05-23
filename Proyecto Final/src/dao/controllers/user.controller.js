@@ -1,6 +1,6 @@
 import registroModel from "../models/registro.model.js";
 import nodemailer from "nodemailer";
-import { opts } from "../config/options.js";
+import { opts } from "../../config/options.js";
 
 // obtener todos los usuarios
 
@@ -107,7 +107,7 @@ export const getAllUsersMainData = async (req, res) => {
 
 //elimintar y enviar un correo con nodemailer a todos los usuarios que no hayan tenido conexión en los últimos 2 días. Deberá enviarse un correo indicando al usuario que su cuenta ha sido eliminada por inactividad
 
-export const deleteInactiveUsers = async () => {
+export const deleteInactiveUsers = async (res) => {
   try {
     const users = await registroModel.find();
     const today = new Date();

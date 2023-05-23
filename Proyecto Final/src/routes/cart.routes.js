@@ -7,7 +7,7 @@ import {
   eliminarTodosProductosCarrito,
   obtenerCarrito,
   obtenerCarritoUser,
-} from "../controllers/cart.controller.js";
+} from "../dao/controllers/cart.controller.js";
 import { isUsuarioRole, checkRoles } from "../middlewares/auth.roles.js";
 
 const router = Router();

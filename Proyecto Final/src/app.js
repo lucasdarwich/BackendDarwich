@@ -8,7 +8,7 @@ import axios from "axios";
 import colors from "colors";
 import { logger } from "./utils/logger.js";
 import passport from "passport";
-import initializePassport from "./auth/passport.auth.js";
+import initializePassport from "./config/passport.config.js";
 import viewsRouter from "./routes/views.routes.js";
 import registroRouter from "./routes/registro.routes.js";
 import loginRouter from "./routes/login.routes.js";
@@ -16,7 +16,7 @@ import productsRoutes from "./routes/product.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import githubRoutes from "./routes/github.routes.js";
 import chatRoutes from "./routes/chat.routes.js";
-import conexionDB from "./database/db.mongoose.js";
+import conexionDB from "./config/db.mongoose.js";
 import mockingRoutes from "./routes/mocking.routes.js";
 import userRoutes from "./routes/users.routes.js";
 import { errorHandler } from "./middlewares/errorHandlers.js";
@@ -82,7 +82,6 @@ const socketIo = new Server(server);
 
 socketIo.on("connection", (socket) => {
   logger.info(colors.green("Nuevo Usuario conectado"));
-  /* console.log("Nuevo Usuario conectado"); */
 
   socket.on("mensaje", (data) => {
     socketIo.emit("mensajeServidor", data);
@@ -106,6 +105,6 @@ app.use("/api/mockingproducts", mockingRoutes);
 app.use("/api/loggerTest", loggerRoutes);
 app.use("/api/recuperar", forgotpasswordRoutes);
 app.use("/api/users", userRoutes);
-/* app.use(errorHandler);
- */
+app.use(errorHandler);
+
 export { app };

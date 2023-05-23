@@ -1,12 +1,11 @@
 import registroModel from "../models/registro.model.js";
-
 import {
   generateEmailToken,
   verifyEmailToken,
   isValidPassword,
   createHash,
-} from "../utils/utils.js";
-import { sendRecoveryEmail } from "../config/messages/gmail.js";
+} from "../../utils/utils.js";
+import { sendRecoveryEmail } from "../../config/messages/gmail.js";
 
 export const forgotPass = async (req, res) => {
   try {
@@ -39,7 +38,7 @@ export const resetPass = async (req, res) => {
       );
     }
     //validamos que el usuario exista en la db
-    const user = await registroModel.find({ email: email });
+    const user = await registroModel.findOne({ email: email }).lean();
     if (!user) {
       return res.send(
         `<p>el usuario no existe, <a href="/api/login">Crea una cuenta</a></p>`
@@ -58,7 +57,7 @@ export const resetPass = async (req, res) => {
       password: createHash(newPassword),
     };
     await registroModel.updateOne({ _id: user._id }, newUser);
-    res.redirect("/login");
+    res.redirect("/api/login");
   } catch (error) {
     res.send({ status: "error", error: error.message });
   }

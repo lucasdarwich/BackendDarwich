@@ -3,8 +3,8 @@ import passport from "passport";
 import {
   autentificarRegistro,
   falloRegistro,
-} from "../controllers/registro.controller.js";
-import { deleteUser, getUserId } from "../controllers/user.controller.js";
+} from "../dao/controllers/registro.controller.js";
+import { deleteUser, getUserId } from "../dao/controllers/user.controller.js";
 
 const router = Router();
 

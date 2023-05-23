@@ -3,7 +3,7 @@ import express from "express";
 import {
   forgotPass,
   resetPass,
-} from "../controllers/forgot.password.controller.js";
+} from "../dao/controllers/forgot.password.controller.js";
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-import ProductManger from "../dao/Mongo/product.repository.Mongo.js";
+import ProductManger from "../Mongo/product.repository.Mongo.js";
 
 const productManger = new ProductManger();
 

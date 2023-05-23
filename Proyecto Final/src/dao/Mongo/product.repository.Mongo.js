@@ -1,4 +1,4 @@
-import { productModel } from "../../models/product.model.js";
+import { productModel } from "../models/product.model.js";
 import { CustomError } from "../../services/error/customError.js";
 import { EError } from "../../enums/EError.js";
 import { generateProductoDeleteErrorInfo } from "../../services/error/productoErrorInfo.js";

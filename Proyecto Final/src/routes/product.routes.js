@@ -5,7 +5,7 @@ import {
   eliminarProducto,
   obtenerProducto,
   obtenerTodosLosProductos,
-} from "../controllers/productos.controller.js";
+} from "../dao/controllers/productos.controller.js";
 import { checkRoles } from "../middlewares/auth.roles.js";
 
 const router = Router();

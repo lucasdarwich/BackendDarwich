@@ -1,7 +1,7 @@
-import { cartModel } from "../../models/cart.model.js";
-import { productModel } from "../../models/product.model.js";
-import registroModel from "../../models/registro.model.js";
-import ticketModel from "../../models/ticket.model.js";
+import { cartModel } from "../models/cart.model.js";
+import { productModel } from "../models/product.model.js";
+import registroModel from "../models/registro.model.js";
+import ticketModel from "../models/ticket.model.js";
 import { generarId } from "../../utils/utils.js";
 
 class CartManager {

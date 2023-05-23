@@ -1,6 +1,6 @@
 import passport from "passport";
 import local from "passport-local";
-import userServices from "../models/registro.model.js";
+import userServices from "../dao/models/registro.model.js";
 import { isValidPassword, createHash } from "../utils/utils.js";
 import GithubStrategy from "passport-github2";
 import * as dotenv from "dotenv";

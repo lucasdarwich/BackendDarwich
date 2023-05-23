@@ -9,7 +9,7 @@ import {
   getAllUsersMainData,
   deleteInactiveUsers,
   getLoggedUser,
-} from "../controllers/user.controller.js";
+} from "../dao/controllers/user.controller.js";
 
 const router = Router();
 
@@ -27,7 +27,9 @@ router.get("/user", getLoggedUser);
 router.get("/datosprincipales", getAllUsersMainData);
 
 // Eliminar usuarios inactivos
-router.delete("/inactive-users", deleteInactiveUsers);
+router.delete("/inactive-users", (req, res) => {
+  deleteInactiveUsers(res);
+});
 
 // Obtener un usuario por ID
 router.get("/:id", getUserById);

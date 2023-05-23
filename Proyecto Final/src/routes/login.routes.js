@@ -7,7 +7,7 @@ import {
   falloLogin,
   logout,
   logueo,
-} from "../controllers/login.controller.js";
+} from "../dao/controllers/login.controller.js";
 
 const router = Router();
 
